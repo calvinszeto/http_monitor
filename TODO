@@ -1,7 +1,6 @@
 TODO:
 
 Plan:
-2. Do file watcher
 3. Do parser
 
 4. Do monitor (file reading part)
@@ -12,12 +11,8 @@ Plan:
 later. Do http daemon (if necessary)
 later. Do packaging and installation
 
-* means easy
-** means medium
-*** means hard
-
 Application skeleton
-    (**)Read file and update with file changes
+    (DONE)Read file and update with file changes
         See this for initial application: http://code.activestate.com/recipes/157035-tail-f-in-python/
         Or this (section 5): http://www.dabeaz.com/generators/ 
         Try pnotify later for less CPU usage: https://github.com/seb-m/pyinotify
