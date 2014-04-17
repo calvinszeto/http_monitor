@@ -1,14 +1,16 @@
 TODO:
 
 Plan:
-3. Do parser
+* Do service w/ sqlite3
+* Do monitor (db reading part)
+* Stat calculation
+* Do alerting logic with TDD
+* Do ncurses output
+* Add more stats
 
-4. Do monitor (file reading part)
-5. Do alerting logic with TDD
-6. Do ncurses output
-7. Add more stats
-
-later. Do http daemon (if necessary)
+later. Add error message for no log found
+later. Add sensible defaults for log and especially database, change Usage accordingly
+later. Add support for reading initial values of log
 later. Do packaging and installation
 
 Application skeleton
@@ -36,7 +38,7 @@ Application skeleton
         How to uninstall everything?
 Log parsing
     (*)Create sample logs
-    (*)Parse out the web site section
+    (DONE)Parse out the web site section
 Logic
     (*)Come up with summary statistics and calculate (look at other applications)
         See Google Analytics, add actual summary statistics like mean, mode, range etc. 
