@@ -29,7 +29,7 @@ def parse_w3log(line):
         values['trail'] = trail if trail != '' else None
         values['version'] = version
         values['status'] = status if status != '' else None
-        values['bites'] = bites if bites != '' else None
+        values['bites'] = int(bites) if bites != '' else None
         return values
     else:
         # Nothing to see here

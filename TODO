@@ -22,14 +22,14 @@ Application skeleton
         curses package: curses/ncurses
     (**)Add color and styling to output, maybe even responsive
         See more on features of curses
-    (**)Make sure app can be kept running, as a daemon perhaps?
+    (DONE)Make sure app can be kept running, as a daemon perhaps? No need.
         On daemons: https://pypi.python.org/pypi/python-daemon/1.5.5
             http://legacy.python.org/dev/peps/pep-3143/
         Perhaps a separate daemon for aggregating data, and a program for running
         output. Clarify on this.
             The daemon will keep up to date on logs and update a stats file.
             Every 10s, the monitor will read the stats file.
-                Do the alerts need to be real time or on the next 10s update? Ask.
+                Do the alerts need to be real time or on the next 10s update? On update.
                 If real time, then monitor needs to also keep up to date w/ stats file.
     (**)Package up file into something useable
         How to install daemon?
