@@ -1,43 +1,36 @@
+import atexit
+import curses
+import itertools
+import os
 import sys
 import sqlite3
-import curses
-import atexit
-import os
+import time
 
 from filewatcher import filewatcher
 from parser import parser
+from httpdb import httpdb
+from httpoutput import httpoutput
 
 USAGE = (
     "Usage: python http_monitor.py -d database -l log"
 )
 
-# Separate DB functionality into functions here
-def connectdb(database):
-    """Connect to database, create a Hit table if it doesn't exist, and return the cursor."""
-    dbconn = sqlite3.connect(database)
-    dbcursor = dbconn.cursor()
-    dbcurser.execute("create table if not exists Hit (host text, logname text, authuser text, date integer, request_type text, domain text, section text, trail text, version text, status text, bites integer)")
-
-def add_hit(dbcursor, hit):
-    """Adds a hit to the database."""
-    dbcursor.execute()
-
-# Separate curses functionality
-def initialize_out(stdscr):
-    curses.curs_set(0)
-    stdscr.border()
-    max_y, max_x = stdscr.getmaxyx()
-    stdscr.hline(max_y/3, 1, '_', max_x-2)
-    stdscr.vline(1, max_x/4, '_', max_x-2)
-    stdscr.refresh()
-
 # Monitor Loop
 def monitor(stdscr):
+    """
+    Runs the monitor output loop.
+    
+    Should be run in curses.wrapper() to initialize curses settings and ensure
+    proper exception handling.
+    """
+    start = time.time()
+    end = time.time() + 10
     while True:
-        # Every 10s:
-            # Run alert logic to get back values
-            # Update output 
-        pass
+        time.sleep(start + 10 - end)
+        start = time.time()
+        # Run alert logic to get back values
+        # Update output 
+        end = time.time()
 
 if __name__ == "__main__":
     database = "default.db"
@@ -49,11 +42,11 @@ if __name__ == "__main__":
             pass
     pid = os.fork()
     if pid == 0:
-        dbcursor = connectdb(database)
+        dbcursor = httpdb.connectdb(database)
         for line in filewatcher.watch(log):
             hit = parser.parse_w3log(line)
             if hit is not None:
-                add_hit(hit)
+                httpdb.add_hit(hit)
     else:
         # Ensure that child process is killed
         atexit.register(os.kill, pid, 9)
