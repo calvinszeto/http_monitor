@@ -7,6 +7,7 @@ Plan:
 * Do ncurses output
 * Add more stats
 
+later. Test db concurrency
 later. Add error message for no log found
 later. Add sensible defaults for log and especially database, change Usage accordingly
 later. Add support for reading initial values of log

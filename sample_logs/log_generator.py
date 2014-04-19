@@ -26,7 +26,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 0:
         print USAGE
         sys.exit(0)
-    with open(sys.argv[1], 'w') as log:
+    with open(sys.argv[1], 'a') as log:
         while True:
             # Wait a random amount of time      
             sleep = random.randint(0,5)

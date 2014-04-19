@@ -2,6 +2,7 @@ import re
 from dateutil import parser
 from dateutil import tz
 import datetime
+import time
 
 log_pattern = re.compile('(.*?) (.*?) (.*?) \[(.*?)\] "(.*?)" (.*?) (.*)')
 request_pattern = re.compile('([A-Z]+) (.*?)\/(.*?)((?:\/.+)*) (.*)')
@@ -21,7 +22,8 @@ def parse_w3log(line):
         values['host'] = host if host != '' else None
         values['logname'] = logname if logname != '-' and logname != '' else None
         values['authuser'] = authuser if authuser != '-' and authuser != '' else None
-        values['date'] = parser.parse(date, fuzzy=True)
+        dt = parser.parse(date, fuzzy=True)
+        values['date'] = time.mktime(dt.timetuple()) # Convert to Unix time
         request_type, domain, section, trail, version = request_pattern.match(request).groups()
         values['request_type'] = request_type
         values['domain'] = domain if domain != '' else None

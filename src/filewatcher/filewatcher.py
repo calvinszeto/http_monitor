@@ -11,7 +11,7 @@ def watch(filename):
             last_location = f.tell()
             line = f.readline()
             if not line:
-                time.sleep(1)
+                time.sleep(0.1)
                 f.seek(last_location)
             else:
                 yield line
