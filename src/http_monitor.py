@@ -16,20 +16,24 @@ USAGE = (
 )
 
 # Monitor Loop
-def monitor(stdscr):
+def monitor(stdscr, database):
     """
     Runs the monitor output loop.
     
     Should be run in curses.wrapper() to initialize curses settings and ensure
     proper exception handling.
     """
+    dbcursor = httpdb.connectdb(database)
+    httpoutput.initialize(stdscr)
     start = time.time()
     end = time.time() + 10
     while True:
         time.sleep(start + 10 - end)
         start = time.time()
-        # Run alert logic to get back values
+        # Run alert logic to get back aggregated values
+        # Pull out functions: should read db and output dict of aggregated values
         # Update output 
+        # httpoutput.update(...)
         end = time.time()
 
 if __name__ == "__main__":
@@ -50,4 +54,4 @@ if __name__ == "__main__":
     else:
         # Ensure that child process is killed
         atexit.register(os.kill, pid, 9)
-        curses.wrapper(monitor) # TODO: Add other arguments
+        curses.wrapper(monitor, database)
