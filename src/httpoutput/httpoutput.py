@@ -6,3 +6,5 @@ def initialize(stdscr):
     stdscr.hline(max_y/3, 1, '_', max_x-2)
     stdscr.vline(1, max_x/4, '_', max_x-2)
     stdscr.refresh()
+
+# Function to update output

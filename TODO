@@ -1,7 +1,6 @@
 TODO:
 
 Plan:
-* Do service w/ sqlite3
 * Do monitor (db reading part)
 * Stat calculation
 * Do alerting logic with TDD
@@ -44,7 +43,6 @@ Logic
         See Google Analytics, add actual summary statistics like mean, mode, range etc. 
         Use every piece of the log
         Daemon calculates the stats, Monitor handles output and alerts
-    (*)Keep time count for traffic alerts
 Test
     (**)Mainly test alerting logic (so that part better be pulled out)
         Use unittest package: http://docs.python-guide.org/en/latest/writing/tests/

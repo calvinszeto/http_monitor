@@ -1,3 +1,5 @@
+import time
+
 HIT_ATTR = [
     "host",
     "logname",
@@ -21,3 +23,11 @@ def connectdb(database):
 def add_hit(dbcursor, hit):
     """Adds a hit to the database."""
     dbcursor.execute("INSERT INTO Hit VALUES (?,?,?,?,?,?,?,?,?,?,?)",[hit[attr] for attr in HIT_ATTR])
+
+def get_hits_by_section(dbcursor):
+    """Returns a list of (domain, section, number of hits) tuples."""
+    dbcursor.execute("SELECT domain, section, COUNT(*) FROM Hit GROUP BY domain, section").fetchall()
+
+def get_total_traffic(dbcursor, seconds):
+    """Returns a count of the total traffic within the last given seconds."""
+    dbcursor.execute("SELECT count(*) FROM Hit WHERE date BETWEEN ? AND ?", [time.time() - seconds, time.time()]).fetchall()
