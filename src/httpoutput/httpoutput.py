@@ -7,4 +7,9 @@ def initialize(stdscr):
     stdscr.vline(1, max_x/4, '_', max_x-2)
     stdscr.refresh()
 
-# Function to update output
+def update(stdscr, values):
+    """Update the output with new values."""
+    if "seconds" in values and "total_traffic" in values:
+        stdscr.addstr(1,1, "Last {seconds} seconds:".format(seconds=values["seconds"))
+        stdscr.addstr(2,5, "{hits} hits.".format(hits = values["total_traffic"]))
+    stdscr.refresh()
