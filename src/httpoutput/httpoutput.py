@@ -11,10 +11,14 @@ def initialize(stdscr):
 
 def update(stdscr, values):
     """Update the output with new values."""
+    # TODO: Move excess logic out of here
     max_y, max_x = stdscr.getmaxyx()
     if "seconds" in values and "total_traffic" in values:
         stdscr.addstr(1,1, "Last {seconds} seconds:".format(seconds=values["seconds"]))
         stdscr.addstr(2,5, "{hits} hits.".format(hits = values["total_traffic"]))
+        # if values["total_traffic"] > threshold:
+        #     Add alert to database
+        #     Output to screen
     if "section_hits" in values:
         section_dict = {} 
         for domain, section, count in values["section_hits"]:
