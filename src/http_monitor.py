@@ -10,10 +10,12 @@ from filewatcher import filewatcher
 from parser import parser
 from httpdb import httpdb
 from httpoutput import httpoutput
+from stats import stats
 
 USAGE = (
     "Usage: python http_monitor.py -d database -l log"
 )
+INTERVAL = 10 # seconds
 
 # Monitor Loop
 def monitor(stdscr, database):
@@ -23,19 +25,17 @@ def monitor(stdscr, database):
     Should be run in curses.wrapper() to initialize curses settings and ensure
     proper exception handling.
     """
+    # Set up database, stats, and output
     dbconn, dbcursor = httpdb.connectdb(database)
+    calc = stats.Stats(dbconn, dbcursor)
     httpoutput.initialize(stdscr)
+    # Set up loop for INTERVAL seconds
     end = time.time()
-    start = time.time() - 10
+    start = time.time() - INTERVAL
     while True:
-        time.sleep(start + 10 - end)
+        time.sleep(start + INTERVAL - end)
         start = time.time()
-        # Run alert logic to get back aggregated values
-        # Pull out functions: should read db and output dict of aggregated values
-        section_hits = httpdb.get_hits_by_section(dbcursor)
-        hits = httpdb.get_total_traffic(dbcursor, 120)
-        values = {'total_traffic': hits, 'seconds': 120, 'section_hits': section_hits}
-        httpoutput.update(stdscr, values)
+        httpoutput.update(stdscr, calc)
         end = time.time()
 
 if __name__ == "__main__":

@@ -9,19 +9,17 @@ def initialize(stdscr):
     stdscr.vline(1, max_x/4, '|', max_y-2)
     stdscr.refresh()
 
-def update(stdscr, values):
+def update(stdscr, calc):
     """Update the output with new values."""
     max_y, max_x = stdscr.getmaxyx()
-    if "seconds" in values and "total_traffic" in values:
-        stdscr.addstr(1,1, "Last {seconds} seconds:".format(seconds=values["seconds"]))
-        stdscr.addstr(2,5, "{hits} hits.".format(hits = values["total_traffic"]))
-    if "section_hits" in values:
-        section_dict = {} 
-        for domain, section, count in values["section_hits"]:
-            if domain in section_dict:
-                section_dict[domain] += [(section, count)]
-            else:
-                section_dict[domain] = list([(section, count)])
+    # Update total traffic in top left
+    hits, seconds = calc.get_total_traffic()
+    stdscr.addstr(1,1, "Last {seconds} seconds:".format(seconds=seconds))
+    stdscr.addstr(2,5, "{hits} hits.".format(hits=hits))
+    # Update miscellaneous calc on top right
+    # Update hits by section on left side
+    section_dict = calc.get_hits_by_section()
+    if section_dict is not None:
         line = max_y/3 + 1
         stdscr.addstr(line, 1, "Hits by section:")
         line += 1
@@ -31,4 +29,5 @@ def update(stdscr, values):
             for section, count in section_dict[domain]:
                 stdscr.addstr(line, 5, "{section}: {count}".format(section=section, count=count))
                 line += 1
+    # Update alerts in right side
     stdscr.refresh()
