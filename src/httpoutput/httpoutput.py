@@ -11,7 +11,24 @@ def initialize(stdscr):
 
 def update(stdscr, values):
     """Update the output with new values."""
+    max_y, max_x = stdscr.getmaxyx()
     if "seconds" in values and "total_traffic" in values:
         stdscr.addstr(1,1, "Last {seconds} seconds:".format(seconds=values["seconds"]))
         stdscr.addstr(2,5, "{hits} hits.".format(hits = values["total_traffic"]))
+    if "section_hits" in values:
+        section_dict = {} 
+        for domain, section, count in values["section_hits"]:
+            if domain in section_dict:
+                section_dict[domain] += [(section, count)]
+            else:
+                section_dict[domain] = list([(section, count)])
+        line = max_y/3 + 1
+        stdscr.addstr(line, 1, "Hits by section:")
+        line += 1
+        for index, domain in enumerate(section_dict):
+            stdscr.addstr(line, 1, "{domain}/:".format(domain=domain))
+            line += 1
+            for section, count in section_dict[domain]:
+                stdscr.addstr(line, 5, "{section}: {count}".format(section=section, count=count))
+                line += 1
     stdscr.refresh()

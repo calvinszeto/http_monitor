@@ -5,7 +5,7 @@ import datetime
 import time
 
 log_pattern = re.compile('(.*?) (.*?) (.*?) \[(.*?)\] "(.*?)" (.*?) (.*)')
-request_pattern = re.compile('([A-Z]+) (.*?)\/(.*?)((?:\/.+)*) (.*)')
+request_pattern = re.compile('([A-Z]+) ((?:.*:\/\/)*.*?)\/(.*?)((?:\/.+)*) (.*)')
 
 def parse_w3log(line):
     """Parses a W3C Log line and returns the resulting values or None if not properly formed."""

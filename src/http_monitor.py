@@ -32,11 +32,10 @@ def monitor(stdscr, database):
         start = time.time()
         # Run alert logic to get back aggregated values
         # Pull out functions: should read db and output dict of aggregated values
-        hits = httpdb.get_total_traffic(dbcursor, 120)        
-        # Update output 
-        values = {'total_traffic': hits, 'seconds': 120}
+        section_hits = httpdb.get_hits_by_section(dbcursor)
+        hits = httpdb.get_total_traffic(dbcursor, 120)
+        values = {'total_traffic': hits, 'seconds': 120, 'section_hits': section_hits}
         httpoutput.update(stdscr, values)
-        # httpoutput.update(...)
         end = time.time()
 
 if __name__ == "__main__":

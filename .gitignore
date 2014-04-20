@@ -1,7 +1,7 @@
 *.swp
 *.pyc
 
-sample-logs/*.log
+sample_logs/*.log
 
 *.db
 *.db-journal

@@ -1,7 +1,6 @@
 TODO:
 
 Plan:
-* Do monitor (db reading part)
 * Stat calculation
 * Do alerting logic with TDD
 * Do ncurses output
@@ -14,14 +13,19 @@ later. Add support for reading initial values of log
 later. Do packaging and installation
 
 Application skeleton
+    (**)Add color and styling to output, maybe even responsive
+        See more on features of curses
+    (**)Package up file into something useable
+        How to install daemon?
+        How to start/stop daemon?
+        How to install application?
+        How to uninstall everything?
     (DONE)Read file and update with file changes
         See this for initial application: http://code.activestate.com/recipes/157035-tail-f-in-python/
         Or this (section 5): http://www.dabeaz.com/generators/ 
         Try pnotify later for less CPU usage: https://github.com/seb-m/pyinotify
-    (*)Output to console, changing every 10s
+    (DONE)Output to console, changing every 10s
         curses package: curses/ncurses
-    (**)Add color and styling to output, maybe even responsive
-        See more on features of curses
     (DONE)Make sure app can be kept running, as a daemon perhaps? No need.
         On daemons: https://pypi.python.org/pypi/python-daemon/1.5.5
             http://legacy.python.org/dev/peps/pep-3143/
@@ -31,14 +35,6 @@ Application skeleton
             Every 10s, the monitor will read the stats file.
                 Do the alerts need to be real time or on the next 10s update? On update.
                 If real time, then monitor needs to also keep up to date w/ stats file.
-    (**)Package up file into something useable
-        How to install daemon?
-        How to start/stop daemon?
-        How to install application?
-        How to uninstall everything?
-Log parsing
-    (*)Create sample logs
-    (DONE)Parse out the web site section
 Logic
     (*)Come up with summary statistics and calculate (look at other applications)
         See Google Analytics, add actual summary statistics like mean, mode, range etc. 
@@ -62,9 +58,6 @@ Improvements
     (***)Come up with improvements
         While terminal output is efficient and summary statistics are useful,
         people are visual; plots and graphs would be a good addition.
-Estimation
-    (***)Estimate completion:
-        Plan out all schoolwork
-        Research all parts listed above
-        Write out step by step plan
-        Round to nearest weekend
+Log parsing
+    (DONE)Create sample logs
+    (DONE)Parse out the web site section
