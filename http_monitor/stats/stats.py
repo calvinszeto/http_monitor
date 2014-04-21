@@ -1,4 +1,4 @@
-from httpdb import httpdb
+from http_monitor.httpdb import httpdb
 
 THRESHOLD_TIME = 120 # seconds
 THRESHOLD_AMOUNT = 20 # hits
@@ -18,13 +18,17 @@ class Stats:
         return (httpdb.get_total_traffic(self._dbcursor, THRESHOLD_TIME), THRESHOLD_TIME)
 
     def get_alerts(self):
-        # Check for an open alert
-        # Check if total traffic is over threshold
-        # If alert is open and traffic is under threshold, find time when traffic went under
-        # If no open alert and traffic is over threshold, find time when traffic went over
-            # Add a new open alert
-        # Return all alerts in order
-        pass
+        """Updates any existing alerts or adds new ones if threshold is passed."""
+        open_alert = None
+        if len(self._alerts) > 0  and self._alerts[0][2] == 0:
+            open_alert = self._alerts[0]
+        total_traffic = self.get_total_traffic()
+        if open_alert is not None and total_traffic < THRESHOLD_AMOUNT:
+            self._alerts[2] = time.time()
+        elif open_alert is None and total_traffic > TRESHOLD_AMOUNT:
+            # Keep alerts in descending time order
+            self._alerts.insert(0, (total_traffic, time.time(), 0))
+        return self._alerts
 
     def get_hits_by_section(self):
         """Get hits by section from db and return them in a {domain: [(section, hit),...]} structure."""
