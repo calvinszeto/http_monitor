@@ -1,13 +1,13 @@
 TODO:
 
 Plan:
-* Do ncurses output
 * Add more stats
-
-later. Add error message for no log found
-later. Add sensible defaults for log and especially database, change Usage accordingly
-later. Add support for reading initial values of log
-later. Do packaging and installation
+* Add options for major variables
+* Add error message for no log found
+* Add error handling for log file
+* Add sensible defaults for log and especially database, change Usage accordingly
+* Add support for reading initial values of log
+* Do packaging and installation
 
 Application skeleton
     (**)Add color and styling to output
@@ -43,24 +43,24 @@ Logic
         See Google Analytics, add actual summary statistics like mean, mode, range etc. 
         Use every piece of the log
         Daemon calculates the stats, Monitor handles output and alerts
-Test
-    (**)Mainly test alerting logic (so that part better be pulled out)
-        Use unittest package: http://docs.python-guide.org/en/latest/writing/tests/
-    (**)Test needs to update file over time 
-    (***)Test needs to check output also
-    (*)Test separate functions
+Improvements
+    (***)Come up with improvements
+        While terminal output is efficient and summary statistics are useful,
+        people are visual; plots and graphs would be a good addition.
 Optimization
     (**)Handle any problems
         File being deleted
         Empty file
         Lines not conforming to format
-    (*)Make sure application uses bounded memory
-    (*)Refactor code to be modular
-    (*)Maintain commenting according to PEP 8
-Improvements
-    (***)Come up with improvements
-        While terminal output is efficient and summary statistics are useful,
-        people are visual; plots and graphs would be a good addition.
+    (DONE)Make sure application uses bounded memory
+    (DONE)Refactor code to be modular
+    (DONE)Maintain commenting according to PEP 8
+Test
+    (DONE)Mainly test alerting logic (so that part better be pulled out)
+        Use unittest package: http://docs.python-guide.org/en/latest/writing/tests/
+    (DONE)Test needs to update file over time 
+    (DONETest needs to check output also
+    (DONE)Test separate functions
 Log parsing
     (DONE)Create sample logs
     (DONE)Parse out the web site section
