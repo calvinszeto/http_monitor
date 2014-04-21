@@ -6,8 +6,6 @@ import sys
 import sqlite3
 import time
 
-# Why don't these imports work?
-import http_monitor
 from http_monitor.filewatcher import filewatcher
 from http_monitor.parser import parser
 from http_monitor.httpdb import httpdb

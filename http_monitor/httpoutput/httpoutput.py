@@ -16,7 +16,7 @@ def update(stdscr, calc):
     hits, seconds = calc.get_total_traffic()
     stdscr.addstr(1,1, "Last {seconds} seconds:".format(seconds=seconds))
     stdscr.addstr(2,5, "{hits} hits.".format(hits=hits))
-    # Update miscellaneous calc on top right
+    # Update miscellaneous calc on right side
     # Update hits by section on left side
     section_dict = calc.get_hits_by_section()
     if section_dict is not None:
@@ -29,5 +29,13 @@ def update(stdscr, calc):
             for section, count in section_dict[domain]:
                 stdscr.addstr(line, 5, "{section}: {count}".format(section=section, count=count))
                 line += 1
-    # Update alerts in right side
+    # Update alerts in middle
+    alerts = calc.get_alerts()
+    line = 1 + len(alerts) * 2 
+    for alert in alerts:
+        if alert[2] != 0:
+            stdscr.addstr(line, max_x/4 + 5, "Recovered at {time}.".format(time=alert[2]))
+        line -= 1
+        stdscr.addstr(line, max_x/4 + 1, "High traffic generated an alert - hits = {value}, triggered at {time}".format(value=alert[0], time=alert[1]))
+        line -= 1
     stdscr.refresh()

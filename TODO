@@ -1,20 +1,22 @@
 TODO:
 
 Plan:
-* Stat calculation
-* Do alerting logic with TDD
 * Do ncurses output
 * Add more stats
 
-later. Test db concurrency
 later. Add error message for no log found
 later. Add sensible defaults for log and especially database, change Usage accordingly
 later. Add support for reading initial values of log
 later. Do packaging and installation
 
 Application skeleton
-    (**)Add color and styling to output, maybe even responsive
-        See more on features of curses
+    (**)Add color and styling to output
+        Add padding
+        Add checks for how wide the screen is
+        Clear strings before update
+        Add color to alerts
+        Add headers
+        Change time to something readable
     (**)Package up file into something useable
         How to install daemon?
         How to start/stop daemon?
