@@ -12,13 +12,7 @@ from http_monitor.httpdb import httpdb
 from http_monitor.httpoutput import httpoutput
 from http_monitor.stats import stats
 
-USAGE = (
-    "Usage: python http_monitor.py -d database -l log"
-)
-INTERVAL = 10 # seconds
-
-# Monitor Loop
-def monitor(stdscr, database):
+def monitor(stdscr, database, interval, threshold_time, threshold_amount):
     """
     Runs the monitor output loop.
     
@@ -27,20 +21,19 @@ def monitor(stdscr, database):
     """
     # Set up database, stats, and output
     dbconn, dbcursor = httpdb.connectdb(database)
-    calc = stats.Stats(dbconn, dbcursor, 120, 20)
+    calc = stats.Stats(dbconn, dbcursor, threshold_time, threshold_amount)
     output = httpoutput.Output(stdscr, calc)
     # Set up loop for INTERVAL seconds
     end = time.time()
-    start = time.time() - INTERVAL
+    start = time.time() - interval 
     while True:
-        time.sleep(start + INTERVAL - end)
+        time.sleep(start + interval - end)
         start = time.time()
         output.update()
         end = time.time()
 
-def main(database, log):
-    database = database or "default.db"
-    log = log or "default.log"
+def main(database = "default.db", log = "default.log", interval = 10, 
+        threshold_time = 120, threshold_amount = 20):
     pid = os.fork()
     if pid == 0:
         dbconn, dbcursor = httpdb.connectdb(database)
@@ -53,4 +46,4 @@ def main(database, log):
     else:
         # Ensure that child process is killed
         atexit.register(os.kill, pid, 9)
-        curses.wrapper(monitor, database)
+        curses.wrapper(monitor, database, interval, threshold_time, threshold_amount)

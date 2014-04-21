@@ -1,13 +1,17 @@
 TODO:
 
 Plan:
-* Add more stats
-* Add options for major variables
+** Add more stats
+** Add options for major variables
+** Do packaging and installation
+** Update README with run instructions, sample log, test, etc.
+** Come up with possible improvements
+** Add the following to issues
 * Add error message for no log found
 * Add error handling for log file
 * Add sensible defaults for log and especially database, change Usage accordingly
 * Add support for reading initial values of log
-* Do packaging and installation
+* Truncation
 
 Application skeleton
     (**)Add color and styling to output
@@ -19,8 +23,6 @@ Application skeleton
             So, our min total is 17 + 4 + 17 + 70 = 104 wide.
             For now, just truncate, and add a todo to use pads
     (**)Package up file into something useable
-        How to install daemon?
-        How to start/stop daemon?
         How to install application?
         How to uninstall everything?
     (DONE)Read file and update with file changes
@@ -42,7 +44,10 @@ Logic
     (*)Come up with summary statistics and calculate (look at other applications)
         See Google Analytics, add actual summary statistics like mean, mode, range etc. 
         Use every piece of the log
-        Daemon calculates the stats, Monitor handles output and alerts
+            host, user, date, request, status, bites
+        Max traffic
+        Average traffic
+        Total bytes transferred
 Improvements
     (***)Come up with improvements
         While terminal output is efficient and summary statistics are useful,
