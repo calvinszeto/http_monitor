@@ -32,7 +32,7 @@ def monitor(stdscr, database, interval, threshold_time, threshold_amount):
         output.update()
         end = time.time()
 
-def main(database = "default.db", log = "default.log", interval = 10, 
+def main(log, database = "default.db", interval = 10, 
         threshold_time = 120, threshold_amount = 20):
     pid = os.fork()
     if pid == 0:

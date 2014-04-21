@@ -1,6 +1,6 @@
 # HTTP Monitor
 
-## Specifications
+## Overview
 * Consume an actively written-to w3c-formatted HTTP access log. (W3C Common Log specified here: http://www.w3.org/Daemon/User/Config/Logging.html)
 
 * Every 10s, display in the console the sections of the web site with the most hits (a section is defined as being what's before the second '/' in a URL. i.e. the section for "http://my.site.com/pages/create' is "http://my.site.com/pages"), as well as interesting summary statistics on the traffic as a whole.
@@ -16,3 +16,9 @@
 * Write a test for the alerting logic
 
 * Explain how you’d improve on this application design
+
+## Running HTTP Monitor
+
+## Testing
+
+## Improvements

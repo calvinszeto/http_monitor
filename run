@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 from http_monitor import main
-main.main(database = "sample.db", 
-    log = "sample_logs/sample.log", 
+main.main(log = "sample_logs/sample.log",
+    database = "sample.db", 
     interval = 10, 
     threshold_time = 120, 
     threshold_amount = 20)
