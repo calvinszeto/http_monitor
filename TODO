@@ -11,12 +11,14 @@ later. Do packaging and installation
 
 Application skeleton
     (**)Add color and styling to output
-        Add padding
-        Add checks for how wide the screen is
         Clear strings before update
-        Add color to alerts
-        Add headers
-        Change time to something readable
+        Add checks for how wide the screen is and truncate strings accordingly
+            Length of Traffic depends on domain size, but the minimum is 17 wide
+            Borders are 4 wide
+            Length of alert kinda depends on # hits but typically should be 65 + #digits, so no more than 70 depending on threshold
+            Stats section should be as wide as traffic section
+            So, our min total is 17 + 4 + 17 + 70 = 104 wide.
+            For now, just truncate, and add a todo to use pads
     (**)Package up file into something useable
         How to install daemon?
         How to start/stop daemon?

@@ -22,14 +22,14 @@ class Stats:
     def get_alerts(self):
         """Updates any existing alerts or adds new ones if threshold is passed."""
         open_alert = None
-        if len(self._alerts) > 0  and self._alerts[0][2] == 0:
+        if len(self._alerts) > 0  and self._alerts[0][2] == None:
             open_alert = self._alerts[0]
         total_traffic = self.get_total_traffic()[0]
         if open_alert is not None and total_traffic < self._threshold_amount:
-            self._alerts[0][2] = time.time()
+            self._alerts[0][2] = time.strftime("%X")
         elif open_alert is None and total_traffic > self._threshold_amount:
             # Keep alerts in descending time order
-            self._alerts.insert(0, [total_traffic, time.time(), 0])
+            self._alerts.insert(0, [total_traffic, time.strftime("%X"), None])
         return self._alerts
 
     def get_hits_by_section(self):
