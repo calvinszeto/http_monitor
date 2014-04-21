@@ -1,33 +1,35 @@
 from http_monitor.httpdb import httpdb
-
-THRESHOLD_TIME = 120 # seconds
-THRESHOLD_AMOUNT = 20 # hits
+import time
 
 class Stats:
     
     _alerts = []
     _dbconn = None
     _dbcursor = None
+    _threshold_time = 0
+    _threshold_amount = 0
      
-    def __init__(self, dbconn, dbcursor):
+    def __init__(self, dbconn, dbcursor, threshold_time, threshold_amount):
         self._dbconn = dbconn
         self._dbcursor = dbcursor
+        self._threshold_time = threshold_time
+        self._threshold_amount = threshold_amount
 
     def get_total_traffic(self):
         """Get total traffic for threshold from db and return it."""
-        return (httpdb.get_total_traffic(self._dbcursor, THRESHOLD_TIME), THRESHOLD_TIME)
+        return (httpdb.get_total_traffic(self._dbcursor, self._threshold_time), self._threshold_time)
 
     def get_alerts(self):
         """Updates any existing alerts or adds new ones if threshold is passed."""
         open_alert = None
         if len(self._alerts) > 0  and self._alerts[0][2] == 0:
             open_alert = self._alerts[0]
-        total_traffic = self.get_total_traffic()
-        if open_alert is not None and total_traffic < THRESHOLD_AMOUNT:
-            self._alerts[2] = time.time()
-        elif open_alert is None and total_traffic > TRESHOLD_AMOUNT:
+        total_traffic = self.get_total_traffic()[0]
+        if open_alert is not None and total_traffic < self._threshold_amount:
+            self._alerts[0][2] = time.time()
+        elif open_alert is None and total_traffic > self._threshold_amount:
             # Keep alerts in descending time order
-            self._alerts.insert(0, (total_traffic, time.time(), 0))
+            self._alerts.insert(0, [total_traffic, time.time(), 0])
         return self._alerts
 
     def get_hits_by_section(self):

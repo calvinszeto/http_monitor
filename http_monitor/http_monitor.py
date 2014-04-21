@@ -27,7 +27,7 @@ def monitor(stdscr, database):
     """
     # Set up database, stats, and output
     dbconn, dbcursor = httpdb.connectdb(database)
-    calc = stats.Stats(dbconn, dbcursor)
+    calc = stats.Stats(dbconn, dbcursor, 120, 20)
     httpoutput.initialize(stdscr)
     # Set up loop for INTERVAL seconds
     end = time.time()
