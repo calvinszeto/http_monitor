@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from http_monitor import main
 main.main(database = "sample.db", 
     log = "sample_logs/sample.log", 

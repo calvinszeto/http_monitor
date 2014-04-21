@@ -2,8 +2,6 @@ TODO:
 
 Plan:
 ** Add more stats
-** Add options for major variables
-** Do packaging and installation
 ** Update README with run instructions, sample log, test, etc.
 ** Come up with possible improvements
 ** Add the following to issues
@@ -12,6 +10,7 @@ Plan:
 * Add sensible defaults for log and especially database, change Usage accordingly
 * Add support for reading initial values of log
 * Truncation
+* Do packaging and installation
 
 Application skeleton
     (**)Add color and styling to output
