@@ -28,14 +28,14 @@ def monitor(stdscr, database):
     # Set up database, stats, and output
     dbconn, dbcursor = httpdb.connectdb(database)
     calc = stats.Stats(dbconn, dbcursor, 120, 20)
-    httpoutput.initialize(stdscr)
+    output = httpoutput.Output(stdscr, calc)
     # Set up loop for INTERVAL seconds
     end = time.time()
     start = time.time() - INTERVAL
     while True:
         time.sleep(start + INTERVAL - end)
         start = time.time()
-        httpoutput.update(stdscr, calc)
+        output.update()
         end = time.time()
 
 def main(database, log):
