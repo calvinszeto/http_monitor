@@ -6,11 +6,13 @@ import sys
 import sqlite3
 import time
 
-from filewatcher import filewatcher
-from parser import parser
-from httpdb import httpdb
-from httpoutput import httpoutput
-from stats import stats
+# Why don't these imports work?
+import http_monitor
+from http_monitor.filewatcher import filewatcher
+from http_monitor.parser import parser
+from http_monitor.httpdb import httpdb
+from http_monitor.httpoutput import httpoutput
+from http_monitor.stats import stats
 
 USAGE = (
     "Usage: python http_monitor.py -d database -l log"
@@ -38,15 +40,9 @@ def monitor(stdscr, database):
         httpoutput.update(stdscr, calc)
         end = time.time()
 
-if __name__ == "__main__":
-    database = "default.db"
-    log = "default.log"
-    # TODO: Add error handling
-    for index, arg in enumerate(sys.argv):
-        if arg == "-d":
-            database = sys.argv[index+1]
-        elif arg == "-l":
-            log = sys.argv[index+1]
+def main(database, log):
+    database = database or "default.db"
+    log = log or "default.log"
     pid = os.fork()
     if pid == 0:
         dbconn, dbcursor = httpdb.connectdb(database)
