@@ -1,8 +1,24 @@
 #!/usr/bin/env python
 
 from http_monitor import main
-main.main(log = "sample_logs/sample.log",
-    database = "sample.db", 
-    interval = 10, 
-    threshold_time = 120, 
-    threshold_amount = 20)
+import sys
+
+log = "sample_logs/sample.log"
+database = "sample.db"
+interval = 10
+threshold_time = 120
+threshold_amount = 20
+
+for idx, arg in enumerate(sys.argv):
+    if arg == "-l" or arg == "--log":
+        log = sys.argv[idx + 1]
+    elif arg == "-d" or arg == "--database":
+        database = sys.argv[idx + 1]
+    elif arg == "-i" or arg == "--interval":
+        interval = sys.argv[idx + 1]
+    elif arg == "-t" or arg == "--threshold":
+        threshold_time = sys.argv[idx + 1]
+        threshold_amount = sys.argv[idx + 2]
+
+main.main(log, database, interval,
+    threshold_time, threshold_amount)

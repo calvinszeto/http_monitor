@@ -1,7 +1,7 @@
 """Contains functions for parsing log lines."""
 
 import re
-from dateutil import parser
+from dateutil import parser as dateparser
 from dateutil import tz
 import datetime
 import time
@@ -17,7 +17,7 @@ def parse_w3log(line):
     results = LOG_PATTERN.match(line).groups()
     # Check if the given line is a proper log line
     wrong_date = datetime.datetime(datetime.MINYEAR, 1, 1, tzinfo=tz.tzlocal())
-    has_date = (parser.parse(results[3], fuzzy=True, default=wrong_date)
+    has_date = (dateparser.parse(results[3], fuzzy=True, default=wrong_date)
         != wrong_date)
     has_proper_request = REQUEST_PATTERN.match(results[4]) is not None
     if results is not None and has_date and has_proper_request:
@@ -30,7 +30,7 @@ def parse_w3log(line):
         values['authuser'] = (authuser
             if authuser != '-' and authuser != '' else None)
         values += parse_request(request)
-        log_date = parser.parse(date, fuzzy=True)
+        log_date = dateparser.parse(date, fuzzy=True)
         values['date'] = time.mktime(
             log_date.timetuple()) # Convert to Unix time
         values['status'] = status if status != '' else None
