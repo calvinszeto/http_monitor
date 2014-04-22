@@ -1,9 +1,8 @@
+"""Monitors an HTTP log and provides traffic statistics and alerts."""
+
 import atexit
 import curses
-import itertools
 import os
-import sys
-import sqlite3
 import time
 
 from http_monitor.filewatcher import filewatcher
@@ -15,7 +14,7 @@ from http_monitor.stats import stats
 def monitor(stdscr, database, interval, threshold_time, threshold_amount):
     """
     Runs the monitor output loop.
-    
+
     Should be run in curses.wrapper() to initialize curses settings and ensure
     proper exception handling.
     """
@@ -25,15 +24,16 @@ def monitor(stdscr, database, interval, threshold_time, threshold_amount):
     output = httpoutput.Output(stdscr, calc)
     # Set up loop for INTERVAL seconds
     end = time.time()
-    start = time.time() - interval 
+    start = time.time() - interval
     while True:
         time.sleep(start + interval - end)
         start = time.time()
         output.update()
         end = time.time()
 
-def main(log, database = "default.db", interval = 10, 
-        threshold_time = 120, threshold_amount = 20):
+def main(log, database="default.db", interval=10,
+        threshold_time=120, threshold_amount=20):
+    """Starts a process for reading log updates and runs the monitor."""
     pid = os.fork()
     if pid == 0:
         dbconn, dbcursor = httpdb.connectdb(database)
@@ -46,4 +46,5 @@ def main(log, database = "default.db", interval = 10,
     else:
         # Ensure that child process is killed
         atexit.register(os.kill, pid, 9)
-        curses.wrapper(monitor, database, interval, threshold_time, threshold_amount)
+        curses.wrapper(monitor, database, interval,
+            threshold_time, threshold_amount)

@@ -1,17 +1,19 @@
+"""Contains the watch function for tracking log files."""
+
 import time
 import os
 
 def watch(filename):
     """Generates lines from a file as the file is updated."""
-    with open(filename) as f:
+    with open(filename) as log:
         # Move to the end of the file
         file_size = os.stat(filename)[6]
-        f.seek(file_size)
+        log.seek(file_size)
         while True:
-            last_location = f.tell()
-            line = f.readline()
+            last_location = log.tell()
+            line = log.readline()
             if not line:
                 time.sleep(0.1)
-                f.seek(last_location)
+                log.seek(last_location)
             else:
                 yield line
