@@ -1,63 +1,10 @@
 TODO:
 
-Plan:
-** Add more stats
-** Update README with run instructions, sample log, test, etc.
-** Come up with possible improvements
-
-Application skeleton
-    ()Package up file into something useable
-        How to install application?
-        How to uninstall everything?
-    (DONE)Add color and styling to output
-        Add checks for how wide the screen is and truncate strings accordingly
-            Length of Traffic depends on domain size, but the minimum is 17 wide
-            Borders are 4 wide
-            Length of alert kinda depends on # hits but typically should be 65 + #digits, so no more than 70 depending on threshold
-            Stats section should be as wide as traffic section
-            So, our min total is 17 + 4 + 17 + 70 = 104 wide.
-            For now, just truncate, and add a todo to use pads
-    (DONE)Read file and update with file changes
-        See this for initial application: http://code.activestate.com/recipes/157035-tail-f-in-python/
-        Or this (section 5): http://www.dabeaz.com/generators/ 
-        Try pnotify later for less CPU usage: https://github.com/seb-m/pyinotify
-    (DONE)Output to console, changing every 10s
-        curses package: curses/ncurses
-    (DONE)Make sure app can be kept running, as a daemon perhaps? No need.
-        On daemons: https://pypi.python.org/pypi/python-daemon/1.5.5
-            http://legacy.python.org/dev/peps/pep-3143/
-        Perhaps a separate daemon for aggregating data, and a program for running
-        output. Clarify on this.
-            The daemon will keep up to date on logs and update a stats file.
-            Every 10s, the monitor will read the stats file.
-                Do the alerts need to be real time or on the next 10s update? On update.
-                If real time, then monitor needs to also keep up to date w/ stats file.
 Logic
-    (*)Come up with summary statistics and calculate (look at other applications)
+    Come up with summary statistics and calculate (look at other applications)
         See Google Analytics, add actual summary statistics like mean, mode, range etc. 
         Use every piece of the log
             host, user, date, request, status, bites
         Max traffic
         Average traffic
         Total bytes transferred
-Improvements
-    (***)Come up with improvements
-        While terminal output is efficient and summary statistics are useful,
-        people are visual; plots and graphs would be a good addition.
-Optimization
-    (DONE)Handle any problems
-        File being deleted
-        Empty file
-        Lines not conforming to format
-    (DONE)Make sure application uses bounded memory
-    (DONE)Refactor code to be modular
-    (DONE)Maintain commenting according to PEP 8
-Test
-    (DONE)Mainly test alerting logic (so that part better be pulled out)
-        Use unittest package: http://docs.python-guide.org/en/latest/writing/tests/
-    (DONE)Test needs to update file over time 
-    (DONETest needs to check output also
-    (DONE)Test separate functions
-Log parsing
-    (DONE)Create sample logs
-    (DONE)Parse out the web site section
