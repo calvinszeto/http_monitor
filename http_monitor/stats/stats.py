@@ -3,6 +3,8 @@
 from http_monitor.httpdb import httpdb
 import time
 
+TIME_FORMAT = "%m-%d-%Y %H:%M:%S"
+
 class Stats(object):
     """Holds state and methods for stat calculation and alerts."""
 
@@ -30,10 +32,11 @@ class Stats(object):
             open_alert = self._alerts[0]
         total_traffic = self.get_total_traffic()[0]
         if open_alert is not None and total_traffic < self._threshold_amount:
-            self._alerts[0][2] = time.strftime("%X")
+            self._alerts[0][2] = time.strftime(TIME_FORMAT)
         elif open_alert is None and total_traffic > self._threshold_amount:
             # Keep alerts in descending time order
-            self._alerts.insert(0, [total_traffic, time.strftime("%X"), None])
+            self._alerts.insert(0,
+                [total_traffic, time.strftime(TIME_FORMAT), None])
         return self._alerts
 
     def get_hits_by_section(self):
@@ -51,6 +54,26 @@ class Stats(object):
                 section_dict[domain] = list([(section, count)])
         return section_dict
 
-    #def get_misc_stats(self):
-        ## Calculate miscellaneous stats here and return them
-        #pass
+    def get_summary_stats(self):
+        """Calculates and returns summary statistics."""
+        total_traffic = httpdb.get_all_traffic(self._dbcursor)
+        earliest, latest = httpdb.get_time_period(self._dbcursor)
+        total_bites = httpdb.get_total_bites(self._dbcursor)
+        values = {}
+        values['threshold'] = self._threshold_time
+        values['range_of_time'] = [time.strftime(TIME_FORMAT
+            , time.localtime(tyme)) for tyme in [earliest, latest]]
+        values['max'] = {
+            'per_threshold': httpdb.get_max_traffic(
+                self._dbcursor, self._threshold_time),
+            'per_minute': httpdb.get_max_traffic(self._dbcursor, 60),
+            'per_hour': httpdb.get_max_traffic(self._dbcursor, 3600)
+        }
+        values['average'] = {
+            'per_threshold': round(total_traffic /
+                float(self._threshold_time), 3),
+            'per_minute': round(total_traffic / 60., 3),
+            'per_hour': round(total_traffic / 3600., 3)
+        }
+        values['total_bites'] = total_bites
+        return values

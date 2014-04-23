@@ -29,7 +29,7 @@ def parse_w3log(line):
             if logname != '-' and logname != '' else None)
         values['authuser'] = (authuser
             if authuser != '-' and authuser != '' else None)
-        values += parse_request(request)
+        values.update(parse_request(request))
         log_date = dateparser.parse(date, fuzzy=True)
         values['date'] = time.mktime(
             log_date.timetuple()) # Convert to Unix time

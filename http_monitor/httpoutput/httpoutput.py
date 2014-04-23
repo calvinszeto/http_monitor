@@ -1,6 +1,7 @@
 """Contains Output class for modifying console output."""
 
 import curses
+import math
 
 class Output(object):
     """Holds output state and updates output."""
@@ -78,11 +79,11 @@ class Output(object):
             for domain in section_dict:
                 self._trafficscr.addstr(line, 3, "{domain}/:"
                     .format(domain=domain))
-                line += 1
+                line += int(math.ceil(float(len(domain))/t_x))
                 for section, count in section_dict[domain]:
                     self._trafficscr.addstr(line, 7, "{section}: {count}"
                         .format(section=section, count=count))
-                    line += 1
+                    line += int(math.ceil(float(len(section))/t_x))
         self._trafficscr.noutrefresh()
 
     def update_alerts(self):
@@ -94,26 +95,70 @@ class Output(object):
         alerts = self._stats.get_alerts()
         line = 3
         for alert in alerts:
+            output_string = ("High traffic generated an alert - "
+                 "hits = {value}, triggered at {time}"
+                 .format(value=alert[0], time=alert[1]))
             if alert[2] is None and curses.has_colors():
-                self._alertsscr.addstr(line, 3,
-                    ("High traffic generated an alert - "
-                     "hits = {value}, triggered at {time}")
-                    .format(value=alert[0], time=alert[1]), curses.A_BOLD)
+                self._alertsscr.addstr(line, 3, output_string, curses.A_BOLD)
             else:
-                self._alertsscr.addstr(line, 3,
-                    ("High traffic generated an alert - "
-                     "hits = {value}, triggered at {time}")
-                    .format(value=alert[0], time=alert[1]))
-            line += 1
+                self._alertsscr.addstr(line, 3, output_string)
+            line += int(math.ceil(float(len(output_string))/a_x))
             if alert[2] is not None:
-                self._alertsscr.addstr(line, 7, "Recovered at {time}."
-                    .format(time=alert[2]))
-            line += 1
+                output_string = "Recovered at {time}.".format(time=alert[2])
+                self._alertsscr.addstr(line, 7, output_string)
+            line += int(math.ceil(float(len(output_string))/a_x))
         self._alertsscr.noutrefresh()
+
+    def update_stats(self):
+        """Update summary statistics output."""
+        self._statsscr.erase()
+        _, s_x = self._statsscr.getmaxyx()
+        self._statsscr.addstr(0, s_x/2 - 5, "Statistics")
+        self._statsscr.hline(1, 0, '=', s_x)
+        stats = self._stats.get_summary_stats()
+        line = 3
+        self._statsscr.addstr(line, 3, "Range of Times Recorded:")
+        line += 1
+        self._statsscr.addstr(line, 7, "{earliest} -".format(
+            earliest=stats['range_of_time'][0]))
+        line += 1
+        self._statsscr.addstr(line, 7, "{latest}".format(
+            latest=stats['range_of_time'][1]))
+        line += 2
+        self._statsscr.addstr(line, 3, "Maximum Traffic:")
+        line += 1
+        self._statsscr.addstr(line, 7,
+            "Per {threshold} Seconds: {traffic}".format(
+            threshold=stats['threshold'],
+            traffic=stats['max']['per_threshold']))
+        line += 1
+        self._statsscr.addstr(line, 7, "Per Minute: {traffic}".format(
+            traffic=stats['max']['per_minute']))
+        line += 1
+        self._statsscr.addstr(line, 7, "Per Hour: {traffic}".format(
+            traffic=stats['max']['per_hour']))
+        line += 2
+        self._statsscr.addstr(line, 3, "Average Traffic:")
+        line += 1
+        self._statsscr.addstr(line, 7,
+            "Per {threshold} Seconds: {traffic}".format(
+            threshold=stats['threshold'],
+            traffic=stats['average']['per_threshold']))
+        line += 1
+        self._statsscr.addstr(line, 7, "Per Minute: {traffic}".format(
+            traffic=stats['average']['per_minute']))
+        line += 1
+        self._statsscr.addstr(line, 7, "Per Hour: {traffic}".format(
+            traffic=stats['average']['per_hour']))
+        line += 2
+        self._statsscr.addstr(line, 3,
+            "Total Bytes Transferred: {bites}".format(
+            bites=stats['total_bites']))
+        self._statsscr.noutrefresh()
 
     def update(self):
         """Update the output with new values."""
         self.update_traffic()
-        # Update miscellaneous self._stats on right side
         self.update_alerts()
+        self.update_stats()
         curses.doupdate()

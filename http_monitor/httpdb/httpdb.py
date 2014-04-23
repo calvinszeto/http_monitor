@@ -54,8 +54,49 @@ def get_total_traffic(dbcursor, seconds):
         "FROM Hit "
         "WHERE date BETWEEN ? AND ?"
     )
-    # with open("test.log", 'a') as test:
-    #     test.write(
-    #       "Checking between : " + str(oldest) + " and " + str(newest))
     # Query is returned as [(hits,)]
     return dbcursor.execute(query_string, [oldest, newest]).fetchall()[0][0]
+
+def get_all_traffic(dbcursor):
+    """Returns the total number of recorded hits."""
+    query_string = (
+        "SELECT count(*) "
+        "FROM Hit "
+    )
+    return dbcursor.execute(query_string).fetchall()[0][0]
+
+def get_time_period(dbcursor):
+    """Returns the dates of the earliest and latest recorded hits."""
+    query_oldest = (
+        "SELECT MIN(date)"
+        "FROM Hit"
+    )
+    query_newest = (
+        "SELECT MAX(date)"
+        "FROM Hit"
+    )
+    oldest = dbcursor.execute(query_oldest).fetchall()[0][0]
+    newest = dbcursor.execute(query_newest).fetchall()[0][0]
+    return oldest, newest
+
+def get_total_bites(dbcursor):
+    """Returns the total number of bytes transferred."""
+    query_string = (
+        "SELECT SUM(bites)"
+        "FROM Hit"
+    )
+    return dbcursor.execute(query_string).fetchall()[0][0]
+
+def get_max_traffic(dbcursor, interval):
+    """Returns the maximum traffic experienced in a given time interval."""
+    query_string = (
+        "SELECT ( "
+        "   SELECT COUNT(*) "
+        "   FROM Hit hi "
+        "   WHERE hi.date BETWEEN h.date - ? AND h.date + ? "
+        "   ) AS maxvalue "
+        "FROM Hit h "
+        "ORDER BY maxvalue DESC "
+        "LIMIT 1"
+    )
+    return dbcursor.execute(query_string, [interval/2]*2).fetchall()[0][0]
